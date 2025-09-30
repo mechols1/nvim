@@ -92,6 +92,22 @@ This document provides a simple and organized overview of all the custom keybind
 | n,x    | `<F3>`   | Format code asynchronously         |
 | n      | `<F4>`   | Show code actions                  |
 
+## Oil.nvim Keybinds
+
+| Mode | Key    | Action                         |
+| ---- | ------ | ------------------------------ |
+| n    | `a`    | Add new entry (file or folder) |
+| n    | `r`    | Rename                         |
+| n    | `d`    | Delete                         |
+| n    | `c`    | Copy                           |
+| n    | `p`    | Paste                          |
+| n    | `y`    | Yank (copy path)               |
+| n    | `q`    | Quit Oil buffer                |
+| n    | `-`    | Go to parent directory         |
+| n    | `<CR>` | Open file or enter directory   |
+| n    | `?`    | Show Oil help menu             |
+| n    | `v`    | Visual select multiple entries |
+
 ---
 
 ## Miscellaneous
@@ -100,3 +116,5 @@ This document provides a simple and organized overview of all the custom keybind
 |------|--------------|------------------------------------------------------|
 | n    | `<leader>dg` | Run `DogeGenerate` for comment documentation         |
 | n    | `<leader>s`  | Replace all instances of word under cursor (line)    |
+
+
