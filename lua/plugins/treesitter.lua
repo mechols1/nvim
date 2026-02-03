@@ -9,7 +9,7 @@ return {
             },
             indent = {
                 enable = true,
-                disable = { "tsx", "typescript", "typescriptreact" },
+                disable = { "typescript", "tsx", "javascript" },
             },
             autotag = { enable = true },
             ensure_installed = {

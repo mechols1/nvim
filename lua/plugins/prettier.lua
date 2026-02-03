@@ -1,22 +1,36 @@
 return {
-  "nvimtools/none-ls.nvim",
-  dependencies = { "nvim-lua/plenary.nvim" },
-  config = function()
-    local null_ls = require("null-ls")
+    'stevearc/conform.nvim',
+    event = { 'BufReadPre', 'BufNewFile' },
+    config = function()
+        local conform = require('conform')
+        conform.setup({
+            formatters_by_ft = {
+                -- conform will run the first available formatter
+                -- prettierd is a wrapper of prettier that keeps a daemon running and all requests go to that daemon
+                -- prettier is the default formatter and each request spawns a new process (slower)
+                lua = { 'stylua' },
+                typescript = { 'prettierd', 'prettier' },
+                typescriptreact = { 'prettierd', 'prettier' },
+                javascript = { 'prettierd', 'prettier' },
+                javascriptreact = { 'prettierd', 'prettier' },
+                json = { 'prettierd', 'prettier' },
+                markdown = { 'prettierd', 'prettier' },
+                html = { 'prettierd', 'prettier' },
+                bash = { 'prettierd', 'prettier' },
+                yaml = { 'prettierd', 'prettier' },
+                toml = { 'prettierd', 'prettier' },
+                css = { 'prettierd', 'prettier' },
+                py = { 'isort', 'black' },
+                csharp = { 'omnisharp', 'dotnet-format' },
+            },
+        })
 
-    null_ls.setup({
-      sources = {
-        -- Prettier daemon (recommended for speed)
-        null_ls.builtins.formatting.prettierd,
-      },
-    })
-
-    -- Format on save
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      callback = function()
-        vim.lsp.buf.format({ async = false })
-      end,
-    })
-  end,
+        vim.keymap.set({ 'n', 'v' }, '<leader>l', function()
+            conform.format({
+                lsp_fallback = true,
+                async = false,
+                timeout = 500,
+            })
+        end, { desc = "Format file or range (Visual mode)" })
+    end,
 }
-

@@ -1,120 +1,99 @@
-# Neovim Keybinds Documentation
+# Neovim Keybinds Documentation (Generated from Current Config)
 
-This document provides a simple and organized overview of all the custom keybinds defined in my Neovim configuration.
+This README lists the keybinds that are **actually defined** in the Lua files you shared (your config), not plugin-default mappings.
+
+> Leader key: `<Space>`
 
 ---
 
 ## General Keybinds
 
-| Mode | Key               | Action                                                      |
-|------|------------------|-------------------------------------------------------------|
-| n    | `<leader>cd`     | Open Ex mode (`:Ex`)                                        |
-| n    | `J`              | Join lines while keeping the cursor in place                |
-| n    | `<C-d>`          | Scroll half-page down and keep the cursor centered          |
-| n    | `<C-u>`          | Scroll half-page up and keep the cursor centered            |
-| n    | `n`              | Move to next search result and keep it centered             |
-| n    | `N`              | Move to previous search result and keep it centered         |
-| n    | `Q`              | Disable Ex mode                                             |
-| n    | `<C-k>`          | Jump to next quickfix entry and keep it centered            |
-| n    | `<C-j>`          | Jump to previous quickfix entry and keep it centered        |
-| n    | `<leader>k`      | Jump to next location entry and keep it centered            |
-| n    | `<leader>j`      | Jump to previous location entry and keep it centered        |
-| i    | `<C-c>`          | Exit insert mode (acts like Esc)                            |
-| n    | `<leader>x`      | Make current file executable (`chmod +x`)                   |
-| n    | `<leader>u`      | Toggle Undotree                                             |
-| n    | `<leader>rl`     | Reload the Neovim config (`~/.config/nvim/init.lua`)        |
-| n    | `<leader><leader>` | Source the current file (`:so`)                           |
+| Mode | Key         | Action |
+|------|-------------|--------|
+| n    | `<leader>e` | Open netrw Explorer (`:Ex`) |
 
 ---
 
-## Visual Mode Keybinds
+## Formatting (conform.nvim)
 
-| Mode | Key            | Action                                              |
-|------|----------------|-----------------------------------------------------|
-| v    | `J`            | Move selected block down                            |
-| v    | `K`            | Move selected block up                              |
-| x    | `<leader>p`    | Paste without overwriting clipboard                 |
-| v    | `<leader>y`    | Yank into system clipboard (even on SSH)            |
+| Mode  | Key        | Action |
+|-------|------------|--------|
+| n,v   | `<leader>l` | Format file (normal) or selected range (visual) using conform (with LSP fallback) |
 
 ---
 
-##  Linting and Formatting
+## Telescope Keybinds
 
-| Mode | Key        | Action                                 |
-|------|------------|----------------------------------------|
-| n    | `<leader>cc` | Run `php-cs-fixer` to format PHP     |
-| n    | `<F3>`     | Format code (LSP)                      |
-
----
-
-##  Telescope Keybinds
-
-| Mode | Key          | Action                                                |
-|------|--------------|-------------------------------------------------------|
-| n    | `<leader>ff` | Find files                                            |
-| n    | `<leader>fg` | Find git-tracked files                                |
-| n    | `<leader>fo` | Open recent files                                     |
-| n    | `<leader>fq` | Open quickfix list                                    |
-| n    | `<leader>fh` | Open help tags                                        |
-| n    | `<leader>fb` | Open buffer list                                      |
-| n    | `<leader>fs` | Grep current string                                   |
-| n    | `<leader>fc` | Grep instances of the current file name w/o extension |
-| n    | `<leader>fi` | Find files in Neovim config directory                 |
+| Mode | Key          | Action |
+|------|--------------|--------|
+| n    | `<leader>ff` | Find files (`telescope.builtin.find_files`) |
+| n    | `<leader>fg` | Live grep (`telescope.builtin.live_grep`) |
+| n    | `<leader>fb` | Buffers (`telescope.builtin.buffers`) |
+| n    | `<leader>fh` | Help tags (`telescope.builtin.help_tags`) |
 
 ---
 
-## Harpoon Integration
+## Harpoon (harpoon2) Keybinds
 
-| Mode | Key          | Action                                         |
-|------|--------------|------------------------------------------------|
-| n    | `<leader>a`  | Add current file to Harpoon list              |
-| n    | `<C-e>`      | Toggle Harpoon quick menu                     |
-| n    | `<leader>fl` | Open Harpoon window with Telescope            |
-| n    | `<C-p>`      | Go to previous Harpoon mark                   |
-| n    | `<C-n>`      | Go to next Harpoon mark                       |
-| n    | `<leader>hr` | **Clear/reset the Harpoon list**              |
+| Mode | Key          | Action |
+|------|--------------|--------|
+| n    | `<leader>a`  | Add current file to Harpoon list |
+| n    | `<C-e>`      | Toggle Harpoon quick menu |
+| n    | `<leader>fl` | Open Harpoon list in Telescope (ivy theme) |
+| n    | `<C-p>`      | Go to previous Harpoon mark |
+| n    | `<C-n>`      | Go to next Harpoon mark |
+| n    | `<leader>hr` | Clear/reset Harpoon list |
 
 ---
 
-## LSP Keybinds
+## LSP Keybinds (buffer-local on LspAttach)
 
-| Mode   | Key      | Action                             |
-|--------|----------|------------------------------------|
-| n      | `K`      | Show hover information             |
-| n      | `gd`     | Go to definition                   |
-| n      | `gD`     | Go to declaration                  |
-| n      | `gi`     | Go to implementation               |
-| n      | `go`     | Go to type definition              |
-| n      | `gr`     | Show references                    |
-| n      | `gs`     | Show signature help                |
-| n      | `gl`     | Show diagnostics in a floating window |
-| n      | `<F2>`   | Rename symbol                      |
-| n,x    | `<F3>`   | Format code asynchronously         |
-| n      | `<F4>`   | Show code actions                  |
+These mappings only exist in buffers **after a language server attaches**.
+
+| Mode | Key    | Action |
+|------|--------|--------|
+| n    | `K`    | Hover info |
+| n    | `gd`   | Go to definition |
+| n    | `gD`   | Go to declaration |
+| n    | `gi`   | Go to implementation |
+| n    | `go`   | Go to type definition |
+| n    | `gr`   | References |
+| n    | `gs`   | Signature help |
+| n    | `gl`   | Line diagnostics float |
+| n    | `<F2>` | Rename symbol |
+| n,x  | `<F3>` | Format (async) |
+| n    | `<F4>` | Code actions |
+
+---
 
 ## Oil.nvim Keybinds
 
-| Mode | Key    | Action                         |
-| ---- | ------ | ------------------------------ |
-| n    | `a`    | Add new entry (file or folder) |
-| n    | `r`    | Rename                         |
-| n    | `d`    | Delete                         |
-| n    | `c`    | Copy                           |
-| n    | `p`    | Paste                          |
-| n    | `y`    | Yank (copy path)               |
-| n    | `q`    | Quit Oil buffer                |
-| n    | `-`    | Go to parent directory         |
-| n    | `<CR>` | Open file or enter directory   |
-| n    | `?`    | Show Oil help menu             |
-| n    | `v`    | Visual select multiple entries |
+| Mode | Key          | Action |
+|------|--------------|--------|
+| n    | `-`          | Open Oil (parent directory) in current window |
+| n    | `<leader>-`  | Toggle Oil floating window |
 
 ---
 
-## Miscellaneous
+## Completion UI Keybinds (nvim-cmp)
 
-| Mode | Key          | Action                                               |
-|------|--------------|------------------------------------------------------|
-| n    | `<leader>dg` | Run `DogeGenerate` for comment documentation         |
-| n    | `<leader>s`  | Replace all instances of word under cursor (line)    |
+These are active while the completion menu / snippet navigation is in use.
 
+| Mode | Key      | Action |
+|------|----------|--------|
+| i    | `<CR>`   | Confirm completion item |
+| i    | `<C-f>`  | Scroll completion docs down |
+| i    | `<C-u>`  | Scroll completion docs up |
+| i    | `<C-e>`  | Toggle completion menu (abort if visible, open if hidden) |
+| i,s  | `<Tab>`  | Next completion item (or open completion); otherwise fallback |
+| i,s  | `<S-Tab>`| Previous completion item |
+| i,s  | `<C-d>`  | Jump to next snippet placeholder (LuaSnip) |
+| i,s  | `<C-b>`  | Jump to previous snippet placeholder (LuaSnip) |
+
+---
+
+## Notes
+
+- This list reflects **only mappings explicitly defined in your config files**.
+- Plugins like Oil may have additional **default** buffer mappings (e.g., inside the Oil buffer), but those are not declared in your config and therefore aren’t listed here.
 
