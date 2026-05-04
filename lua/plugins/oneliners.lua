@@ -21,4 +21,6 @@ return {
             require('nvim-highlight-colors').setup({})
         end
     },
+    { -- Glow: a markdown viewer
+        'ellisonleao/glow.nvim', config = true, cmd = 'Glow' },
 }

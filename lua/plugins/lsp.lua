@@ -38,16 +38,6 @@ return {
             end
         })
 
-        -- Add borders to floating windows
-        vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
-            vim.lsp.handlers.hover,
-            { border = 'rounded' }
-        )
-        vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
-            vim.lsp.handlers.signature_help,
-            { border = 'rounded' }
-        )
-
         -- Configure error/warnings interface
         vim.diagnostic.config({
             virtual_text = true,
@@ -68,14 +58,21 @@ return {
             },
         })
 
-        -- Add cmp_nvim_lsp capabilities settings to lspconfig
-        -- This should be executed before you configure any language server
-        local lspconfig_defaults = require('lspconfig').util.default_config
-        lspconfig_defaults.capabilities = vim.tbl_deep_extend(
-            'force',
-            lspconfig_defaults.capabilities,
-            require('cmp_nvim_lsp').default_capabilities()
-        )
+        -- Default capabilities (cmp_nvim_lsp) for every language server
+        vim.lsp.config('*', {
+            capabilities = require('cmp_nvim_lsp').default_capabilities(),
+        })
+
+        -- Per-server overrides (replaces mason-lspconfig `handlers`, removed in 2.0)
+        vim.lsp.config('lua_ls', {
+            settings = {
+                Lua = {
+                    runtime = { version = 'LuaJIT' },
+                    diagnostics = { globals = { 'vim' } },
+                    workspace = { library = { vim.env.VIMRUNTIME } },
+                },
+            },
+        })
 
         -- This is where you enable features that only work
         -- if there is a language server active in the file
@@ -83,13 +80,13 @@ return {
             callback = function(event)
                 local opts = { buffer = event.buf }
 
-                vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
+                vim.keymap.set('n', 'K', function() vim.lsp.buf.hover({ border = 'rounded' }) end, opts)
                 vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
                 vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
                 vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts)
                 vim.keymap.set('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
                 vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
-                vim.keymap.set('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
+                vim.keymap.set('n', 'gs', function() vim.lsp.buf.signature_help({ border = 'rounded' }) end, opts)
                 vim.keymap.set('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<cr>', opts)
                 vim.keymap.set('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
                 vim.keymap.set({ 'n', 'x' }, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
@@ -105,32 +102,8 @@ return {
                 "ts_ls",
                 "eslint",
             },
-            handlers = {
-                -- this first function is the "default handler"
-                -- it applies to every language server without a custom handler
-                function(server_name)
-                    require('lspconfig')[server_name].setup({})
-                end,
-
-                -- this is the "custom handler" for `lua_ls`
-                lua_ls = function()
-                    require('lspconfig').lua_ls.setup({
-                        settings = {
-                            Lua = {
-                                runtime = {
-                                    version = 'LuaJIT',
-                                },
-                                diagnostics = {
-                                    globals = { 'vim' },
-                                },
-                                workspace = {
-                                    library = { vim.env.VIMRUNTIME },
-                                },
-                            },
-                        },
-                    })
-                end,
-            },
+            -- mason-lspconfig 2.x auto-enables installed servers via vim.lsp.enable;
+            -- per-server settings live in vim.lsp.config(...) calls above.
         })
 
         local cmp = require('cmp')
